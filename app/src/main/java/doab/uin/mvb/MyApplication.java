@@ -21,7 +21,7 @@ public class MyApplication extends Application {
         super.onCreate();
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
-                    "odoab.uin.mvb",
+                    "doab.uin.mvb",
                     PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
