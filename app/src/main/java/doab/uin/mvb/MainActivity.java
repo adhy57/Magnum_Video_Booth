@@ -1,7 +1,7 @@
 package doab.uin.mvb;
 
-import android.app.Activity;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,18 +15,9 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        if (savedInstanceState == null) {
-//            // Add the fragment on initial activity setup
-//            mainFragment = new MainFragment();
-//            getSupportFragmentManager()
-//                    .beginTransaction()
-//                    .add(android.R.id.content, mainFragment)
-//                    .commit();
-//        } else {
-//            // Or set the fragment from restored state info
-//            mainFragment = (MainFragment) getSupportFragmentManager()
-//                    .findFragmentById(android.R.id.content);
-//        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.container, new MainFragment()).commit();
+
     }
 
 

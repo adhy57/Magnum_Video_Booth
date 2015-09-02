@@ -3,6 +3,7 @@ package doab.uin.mvb;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +37,9 @@ public class MainFragment extends Fragment {
         public void onSuccess(LoginResult loginResult) {
             AccessToken accessToken = loginResult.getAccessToken();
             Profile profile = Profile.getCurrentProfile();
-            displayProfileWelcome(profile);
+//            displayProfileWelcome(profile);
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.container, new CameraFragment()).commit();
         }
 
         @Override
@@ -48,7 +51,7 @@ public class MainFragment extends Fragment {
         public void onError(FacebookException e) {
 //            info.setText("Error : "+e.toString());
             Log.d("Error : ", e.toString());
-            Toast.makeText(getActivity().getApplicationContext(), "" + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity().getApplicationContext(), "Connection Error,\nPlease check your network", Toast.LENGTH_LONG).show();
         }
     };
 
@@ -74,6 +77,7 @@ public class MainFragment extends Fragment {
         };
         mTokenTracker.startTracking();
         mProfileTracker.startTracking();
+
     }
 
     @Override
@@ -85,8 +89,9 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        info = (TextView)view.findViewById(R.id.info);
         LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button);
-        loginButton.setReadPermissions("user_friend");
+//        loginButton.setReadPermissions("user_friend");
         loginButton.setFragment(this);
         loginButton.registerCallback(mCallbackManager, mCallback);
     }
