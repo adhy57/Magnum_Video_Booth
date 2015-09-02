@@ -1,5 +1,6 @@
 package doab.uin.mvb;
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 //        if (savedInstanceState == null) {
 //            // Add the fragment on initial activity setup
 //            mainFragment = new MainFragment();
@@ -25,7 +27,6 @@ public class MainActivity extends ActionBarActivity {
 //            mainFragment = (MainFragment) getSupportFragmentManager()
 //                    .findFragmentById(android.R.id.content);
 //        }
-        setContentView(R.layout.activity_main);
     }
 
 
