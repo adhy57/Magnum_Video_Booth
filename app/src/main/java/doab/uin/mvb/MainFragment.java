@@ -22,6 +22,8 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import java.util.Arrays;
+
 
 /**
  * A placeholder fragment containing a simple view.
@@ -39,7 +41,10 @@ public class MainFragment extends Fragment {
             Profile profile = Profile.getCurrentProfile();
 //            displayProfileWelcome(profile);
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            ((MyApplication)getActivity().getApplication()).setTake(0);
+            ((MyApplication)getActivity().getApplication()).setUriVideo(null);
             fragmentManager.beginTransaction().replace(R.id.container, new CameraFragment()).commit();
+
         }
 
         @Override
@@ -51,7 +56,7 @@ public class MainFragment extends Fragment {
         public void onError(FacebookException e) {
 //            info.setText("Error : "+e.toString());
             Log.d("Error : ", e.toString());
-            Toast.makeText(getActivity().getApplicationContext(), "Connection Error,\nPlease check your network", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity().getApplicationContext(), "Connection Error,\nPlease check your internet", Toast.LENGTH_LONG).show();
         }
     };
 
@@ -91,7 +96,7 @@ public class MainFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         info = (TextView)view.findViewById(R.id.info);
         LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button);
-//        loginButton.setReadPermissions("user_friend");
+        loginButton.setReadPermissions(Arrays.asList("publish_actions"));
         loginButton.setFragment(this);
         loginButton.registerCallback(mCallbackManager, mCallback);
     }

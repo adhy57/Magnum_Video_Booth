@@ -16,6 +16,25 @@ import java.security.NoSuchAlgorithmException;
  */
 public class MyApplication extends Application {
 
+    public String uriVideo = null;
+    public int take = 0 ;
+
+    public void setUriVideo(String uriVideo){
+        this.uriVideo = uriVideo;
+    }
+
+    public String getUriVideo() {
+        return uriVideo;
+    }
+
+    public void setTake(int take) {
+        this.take = take;
+    }
+
+    public int getTake() {
+        return take;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();

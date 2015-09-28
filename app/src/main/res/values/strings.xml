@@ -3,4 +3,23 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="facebook_app_id">863694707041498</string>
+
+    <!--video-->
+    <string name="capture_video">Capture video</string>
+    <string name="upload_video">Upload video</string>
+
+    <string name="status_nocapture">nothing captured yet</string>
+    <string name="status_capturesuccess">Capture successful: %s</string>
+    <string name="status_capturecancelled">Capture cancelled by user</string>
+    <string name="status_capturefailed">Capture failed</string>
+
+    <string name="filename_hint">e.g. myVideo.mp4</string>
+    <string name="duration_hint">maximum duration</string>
+    <string name="duration_unit">sec</string>
+    <string name="filesize_hint">maximum filesize</string>
+    <string name="filesize_unit">Mb</string>
+
+    <string name="advanced">advanced</string>
+    <string name="github">show on GitHub</string>
+    <string name="github_url">https://github.com/jmolsmobile/LandscapeVideoCamera</string>
 </resources>

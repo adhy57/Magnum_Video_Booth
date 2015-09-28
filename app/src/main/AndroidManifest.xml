@@ -17,7 +17,8 @@
             android:value="@string/facebook_app_id"/>
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,8 +31,9 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/app_name" />
         <activity
-            android:name="com.jmolsmobile.landscapevideocapture.VideoCaptureActivity"
-            android:screenOrientation="sensor" >
+            android:name="doab.uin.mvb.camera.VideoCaptureActivity"
+            android:screenOrientation="sensor"
+            android:label="@string/app_name" >
         </activity>
         <provider
             android:authorities="com.facebook.app.FacebookContentProvider863694707041498"
