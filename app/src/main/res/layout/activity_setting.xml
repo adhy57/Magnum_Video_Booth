@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    >
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pilih Perangkat:" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="By. Adhy57" />
+    <Button
+        android:id="@+id/bPutar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/textView1"
+        android:text="Putar"/>
+    <Button
+        android:id="@+id/bOff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bPutar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:text="Matikan" />
+
+    <ListView
+        android:id="@+id/listBluetooth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bOn"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignRight="@+id/bOn"
+        android:layout_below="@+id/textView2" >
+
+    </ListView>
+
+    <Button
+        android:id="@+id/bOn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bOff"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/bOff"
+        android:text="Hidupkan" />
+</RelativeLayout>
