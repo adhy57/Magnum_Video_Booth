@@ -18,6 +18,7 @@ public class MyApplication extends Application {
 
     public String uriVideo = null;
     public int take = 0 ;
+    public boolean mConnected = false;
 
     public void setUriVideo(String uriVideo){
         this.uriVideo = uriVideo;
@@ -33,6 +34,14 @@ public class MyApplication extends Application {
 
     public int getTake() {
         return take;
+    }
+
+    public boolean ismConnected() {
+        return mConnected;
+    }
+
+    public void setmConnected(boolean mConnected) {
+        this.mConnected = mConnected;
     }
 
     @Override

@@ -7,7 +7,7 @@ import android.bluetooth.BluetoothSocket;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
-import android.speech.RecognizerIntent;
+
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -34,7 +34,7 @@ public class SettingActivity extends Activity {
     Set<BluetoothDevice> devicesArray;
     Button bOn, bOff, bPutar;
     TextView tvMac;
-    boolean mConnected = false;
+    boolean mConnected = ((MyApplication)getApplication()).ismConnected();
     String namaPerangkat, macAddress;
     BluetoothSocket mBluetoothSocket;
     OutputStream mOutputStream;
@@ -44,7 +44,7 @@ public class SettingActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_setting);
 
         listView = (ListView)findViewById(R.id.listBluetooth);
@@ -181,7 +181,7 @@ public class SettingActivity extends Activity {
                 mBluetoothSocket = null;
             }
         }
-        mConnected = false;
+        ((MyApplication)getApplication()).setmConnected(false);
     }
 
     protected boolean connect(String macAddress2) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IOException{
@@ -199,7 +199,7 @@ public class SettingActivity extends Activity {
             listAdapter.clear();
             listAdapter.add("Putuskan Perangkat");
         }
-        mConnected = true;
+        ((MyApplication)getApplication()).setmConnected(true);
         return true;
     }
 
