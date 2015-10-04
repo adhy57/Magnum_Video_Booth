@@ -1,6 +1,7 @@
 package doab.uin.mvb;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothSocket;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -21,6 +22,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -30,6 +32,9 @@ import com.facebook.share.Sharer;
 import com.facebook.share.model.ShareVideo;
 import com.facebook.share.model.ShareVideoContent;
 import com.facebook.share.widget.ShareDialog;
+
+import java.io.IOException;
+import java.io.OutputStream;
 
 import doab.uin.mvb.camera.VideoCaptureActivity;
 import doab.uin.mvb.camera.configuration.CaptureConfiguration;
@@ -52,6 +57,10 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
     CallbackManager mCallbackManager;
     ShareDialog shareDialog;
     Bundle savedInBundle;
+    //bluetooth
+    boolean mConnected = ((MyApplication)getActivity().getApplication()).ismConnected();
+    BluetoothSocket mBluetoothSocket = ((MyApplication)getActivity().getApplication()).getmBluetoothSocket();
+    OutputStream mOutputStream = ((MyApplication)getActivity().getApplication()).getmOutputStream();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -121,11 +130,32 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_capturevideo) {
+            prepareSend();
             startVideoCaptureActivity();
         } else if (v.getId() == R.id.iv_thumbnail) {
             playVideo();
         } else if (v.getId() == R.id.btn_uploadvideo){
             uploadVideo();
+        }
+    }
+
+    private void prepareSend(){
+        if(mConnected){
+            // TODO Auto-generated method stub
+            try {
+                send("putar\n");
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }else{
+            Toast.makeText(getActivity().getApplicationContext(), "Koneksikan perangkat dahulu!", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void send(final String message) throws IOException {
+        if (mConnected) {
+            if (mBluetoothSocket != null) {
+                mOutputStream.write(message.getBytes());
+            }
         }
     }
 

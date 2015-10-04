@@ -96,7 +96,7 @@ public class MainFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         info = (TextView)view.findViewById(R.id.info);
         LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button);
-        loginButton.setReadPermissions(Arrays.asList("publish_actions"));
+//        loginButton.setReadPermissions(Arrays.asList("publish_actions"));
         loginButton.setFragment(this);
         loginButton.registerCallback(mCallbackManager, mCallback);
     }

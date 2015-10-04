@@ -119,7 +119,17 @@ public class CameraWrapper {
     }
 
     protected Camera openCameraFromSystem() {
+//        int numCams = Camera.getNumberOfCameras();
+//        for (int camId = 0; camId < numCams; camId++) {
+//            CameraInfo info = new CameraInfo();
+//            Camera.getCameraInfo(camId, info);
+//            if (info.facing == CameraInfo.CAMERA_FACING_FRONT) {
+//                foundId = camId;
+//                break;
+//            }
+//        }
         return Camera.open(CameraInfo.CAMERA_FACING_BACK);
+//        return Camera.open(CameraInfo.CAMERA_FACING_FRONT);
     }
 
     protected void unlockCameraFromSystem() {

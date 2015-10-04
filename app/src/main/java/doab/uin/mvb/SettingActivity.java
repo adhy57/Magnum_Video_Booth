@@ -34,7 +34,7 @@ public class SettingActivity extends Activity {
     Set<BluetoothDevice> devicesArray;
     Button bOn, bOff, bPutar;
     TextView tvMac;
-    boolean mConnected = ((MyApplication)getApplication()).ismConnected();
+    boolean mConnected;
     String namaPerangkat, macAddress;
     BluetoothSocket mBluetoothSocket;
     OutputStream mOutputStream;
@@ -46,6 +46,10 @@ public class SettingActivity extends Activity {
         super.onCreate(savedInstanceState);
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_setting);
+        //bluetooth
+        mConnected = ((MyApplication)getApplication()).ismConnected();
+        mBluetoothSocket = ((MyApplication)getApplication()).getmBluetoothSocket();
+        mOutputStream = ((MyApplication)getApplication()).getmOutputStream();
 
         listView = (ListView)findViewById(R.id.listBluetooth);
         listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, 0);
@@ -102,10 +106,10 @@ public class SettingActivity extends Activity {
         bPutar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                if(mConnected){
+                if(((MyApplication)getApplication()).ismConnected()){
                     // TODO Auto-generated method stub
                     try {
-                        send("putar\n");
+                        send("START");
                     }catch (IOException e){
                         e.printStackTrace();
                     }
@@ -175,10 +179,10 @@ public class SettingActivity extends Activity {
             try {
                 if (mBluetoothSocket != null) {
                     mBluetoothSocket.close();
-                    mBluetoothSocket = null;
+                    ((MyApplication)getApplication()).setmBluetoothSocket(null);
                 }
             } catch (IOException e) {
-                mBluetoothSocket = null;
+                ((MyApplication)getApplication()).setmBluetoothSocket(null);
             }
         }
         ((MyApplication)getApplication()).setmConnected(false);
@@ -193,7 +197,7 @@ public class SettingActivity extends Activity {
         mBluetoothSocket = mBluetoothDevice.createRfcommSocketToServiceRecord(localUUID);
         mBluetoothSocket.connect();
 
-        mOutputStream = mBluetoothSocket.getOutputStream();
+        mBluetoothSocket.getOutputStream();
 
         if(!mConnected){
             listAdapter.clear();
@@ -204,7 +208,7 @@ public class SettingActivity extends Activity {
     }
 
     private void send(final String message) throws IOException {
-        if (mConnected) {
+        if (((MyApplication)getApplication()).ismConnected()) {
             if (mBluetoothSocket != null) {
                 mOutputStream.write(message.getBytes());
             }

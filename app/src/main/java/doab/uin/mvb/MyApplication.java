@@ -1,12 +1,14 @@
 package doab.uin.mvb;
 
 import android.app.Application;
+import android.bluetooth.BluetoothSocket;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.util.Base64;
 import android.util.Log;
 
+import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -19,6 +21,24 @@ public class MyApplication extends Application {
     public String uriVideo = null;
     public int take = 0 ;
     public boolean mConnected = false;
+    public BluetoothSocket mBluetoothSocket;
+    public OutputStream mOutputStream;
+
+    public BluetoothSocket getmBluetoothSocket() {
+        return mBluetoothSocket;
+    }
+
+    public OutputStream getmOutputStream() {
+        return mOutputStream;
+    }
+
+    public void setmOutputStream(OutputStream mOutputStream) {
+        this.mOutputStream = mOutputStream;
+    }
+
+    public void setmBluetoothSocket(BluetoothSocket mBluetoothSocket) {
+        this.mBluetoothSocket = mBluetoothSocket;
+    }
 
     public void setUriVideo(String uriVideo){
         this.uriVideo = uriVideo;
