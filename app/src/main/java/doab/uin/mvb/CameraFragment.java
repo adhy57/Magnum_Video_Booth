@@ -29,6 +29,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.model.ShareVideo;
 import com.facebook.share.model.ShareVideoContent;
 import com.facebook.share.widget.ShareDialog;
@@ -55,28 +56,20 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
     Button captureBtn;
     Button uploadBtn;
     CallbackManager mCallbackManager;
-    ShareDialog shareDialog;
     Bundle savedInBundle;
-    //bluetooth
-    boolean mConnected;
-    BluetoothSocket mBluetoothSocket;
-    OutputStream mOutputStream;
+    ShareDialog shareDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
-        //bluetooth
-        mConnected = ((MyApplication)getActivity().getApplication()).ismConnected();
-        mBluetoothSocket = ((MyApplication)getActivity().getApplication()).getmBluetoothSocket();
-        mOutputStream = ((MyApplication)getActivity().getApplication()).getmOutputStream();
 
         mCallbackManager = CallbackManager.Factory.create();
-        shareDialog = new ShareDialog(this);
+        shareDialog = new ShareDialog(getActivity());
         shareDialog.registerCallback(mCallbackManager, new FacebookCallback<Sharer.Result>() {
             @Override
             public void onSuccess(Sharer.Result result) {
-
+                Toast.makeText(getActivity(), "video",Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -139,35 +132,18 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
             startVideoCaptureActivity();
         } else if (v.getId() == R.id.iv_thumbnail) {
             playVideo();
+            Toast.makeText(getActivity(), "video",Toast.LENGTH_SHORT).show();
         } else if (v.getId() == R.id.btn_uploadvideo){
             uploadVideo();
-        }
-    }
-
-    private void prepareSend(){
-        if(mConnected){
-            // TODO Auto-generated method stub
-            try {
-                send("putar\n");
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-        }else{
-            Toast.makeText(getActivity().getApplicationContext(), "Koneksikan perangkat dahulu!", Toast.LENGTH_SHORT).show();
-        }
-    }
-    private void send(final String message) throws IOException {
-        if (mConnected) {
-            if (mBluetoothSocket != null) {
-                mOutputStream.write(message.getBytes());
-            }
+        } else {
+            Toast.makeText(getActivity(), "keluar",Toast.LENGTH_SHORT).show();
         }
     }
 
     private void uploadVideo() {
 //        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 //        fragmentManager.beginTransaction().replace(R.id.container, new MainFragment()).commit();
-        if (ShareDialog.canShow(ShareVideoContent.class)) {
+            shareDialog.canShow(ShareVideoContent.class);
             Uri videoFileUri = Uri.parse(filename);
             ShareVideo shareVideo = new ShareVideo.Builder()
                     .setLocalUrl(videoFileUri)
@@ -178,14 +154,16 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
                     .build();
             shareDialog.show(content);
 
+
 //            ShareLinkContent linkContent = new ShareLinkContent.Builder()
 //                    .setContentTitle("Hello Facebook")
 //                    .setContentDescription(
-//                            "The 'Hello Facebook' sample showcases simple Facebook integration"
+//                            "The 'Hello Facebook' sample showcases simple Facebook integration")
 //                                    .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
-//                                    .build();
-//                            shareDialog.show(linkContent);
-        }
+//                                    .build();
+//                            shareDialog.show(linkContent);
+
+        //((MyApplication)getActivity().getApplication()).setUriVideo(null);
 
     }
 
@@ -232,10 +210,10 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
 //            setContent();
 
         } else if (resultCode == Activity.RESULT_CANCELED) {
-            filename = null;
+            //filename = null;
             statusMessage = getString(R.string.status_capturecancelled);
         } else if (resultCode == VideoCaptureActivity.RESULT_ERROR) {
-            filename = null;
+            //filename = null;
             statusMessage = getString(R.string.status_capturefailed);
         }
         updateStatusAndThumbnail();
@@ -266,7 +244,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
     private CaptureConfiguration createCaptureConfiguration() {
 //        final CaptureResolution resolution = getResolution(resolutionSp.getSelectedItemPosition());
 //        final CaptureQuality quality = getQuality(qualitySp.getSelectedItemPosition());
-        int fileDuration = 10;
+        int fileDuration = 6;
         int filesize = 10;
         return new CaptureConfiguration(CaptureResolution.RES_480P, CaptureQuality.HIGH, fileDuration, filesize);
     }
@@ -279,17 +257,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
         try {
             startActivity(videoIntent);
         } catch (ActivityNotFoundException e) {
-            // NOP
+
         }
     }
-//    public void setContent(){
-//        Uri videoFileUri = Uri.parse(filename);
-//        ShareVideo video = new ShareVideo.Builder()
-//                .setLocalUrl(videoFileUri)
-//                .build();
-//        ShareVideoContent content = new ShareVideoContent.Builder()
-//                .setVideo(video)
-//                .build();
-//        shareButton.setShareContent(content);
-//    }
 }

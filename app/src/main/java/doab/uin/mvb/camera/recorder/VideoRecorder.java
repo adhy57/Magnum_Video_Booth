@@ -229,7 +229,8 @@ public class VideoRecorder implements OnInfoListener, CapturePreviewInterface {
                 break;
             case MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED:
                 CLog.d(CLog.RECORDER, "MediaRecorder max duration reached");
-                stopRecording("Capture stopped - Max duration reached");
+//                stopRecording("Capture stopped - Max duration reached");
+                stopRecording("");
                 break;
             case MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED:
                 CLog.d(CLog.RECORDER, "MediaRecorder max filesize reached");

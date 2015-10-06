@@ -108,7 +108,7 @@ public class VideoCaptureView extends FrameLayout implements OnClickListener {
 			mThumbnailIv.setImageBitmap(videoThumbnail);
 		}
 		//langsung setuju
-		mRecordingInterface.onAcceptButtonClicked();
+//		mRecordingInterface.onAcceptButtonClicked();
 	}
 
 	@Override
