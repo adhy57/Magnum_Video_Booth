@@ -27,7 +27,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.facebook.FacebookActivity"
+        <activity
+            android:name="com.facebook.FacebookActivity"
             android:configChanges=
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
@@ -41,6 +42,9 @@
             android:name="doab.uin.mvb.SettingActivity"
             android:screenOrientation="sensor"
             android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="app.akexorcist.bluetotohspp.library.DeviceList" >
         </activity>
         <provider
             android:authorities="com.facebook.app.FacebookContentProvider863694707041498"

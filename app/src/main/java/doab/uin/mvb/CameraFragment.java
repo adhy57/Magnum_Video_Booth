@@ -58,14 +58,19 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
     ShareDialog shareDialog;
     Bundle savedInBundle;
     //bluetooth
-    boolean mConnected = ((MyApplication)getActivity().getApplication()).ismConnected();
-    BluetoothSocket mBluetoothSocket = ((MyApplication)getActivity().getApplication()).getmBluetoothSocket();
-    OutputStream mOutputStream = ((MyApplication)getActivity().getApplication()).getmOutputStream();
+    boolean mConnected;
+    BluetoothSocket mBluetoothSocket;
+    OutputStream mOutputStream;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
+        //bluetooth
+        mConnected = ((MyApplication)getActivity().getApplication()).ismConnected();
+        mBluetoothSocket = ((MyApplication)getActivity().getApplication()).getmBluetoothSocket();
+        mOutputStream = ((MyApplication)getActivity().getApplication()).getmOutputStream();
+
         mCallbackManager = CallbackManager.Factory.create();
         shareDialog = new ShareDialog(this);
         shareDialog.registerCallback(mCallbackManager, new FacebookCallback<Sharer.Result>() {
@@ -130,7 +135,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_capturevideo) {
-            prepareSend();
+//            prepareSend();
             startVideoCaptureActivity();
         } else if (v.getId() == R.id.iv_thumbnail) {
             playVideo();

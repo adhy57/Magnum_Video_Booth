@@ -128,8 +128,8 @@ public class CameraWrapper {
 //                break;
 //            }
 //        }
-        return Camera.open(CameraInfo.CAMERA_FACING_BACK);
-//        return Camera.open(CameraInfo.CAMERA_FACING_FRONT);
+//        return Camera.open(CameraInfo.CAMERA_FACING_BACK);
+        return Camera.open(CameraInfo.CAMERA_FACING_FRONT);
     }
 
     protected void unlockCameraFromSystem() {

@@ -56,7 +56,7 @@ public class MainFragment extends Fragment {
         public void onError(FacebookException e) {
 //            info.setText("Error : "+e.toString());
             Log.d("Error : ", e.toString());
-            Toast.makeText(getActivity().getApplicationContext(), "Connection Error,\nPlease check your internet", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity().getApplicationContext(), "Connection Error,", Toast.LENGTH_LONG).show();
         }
     };
 
