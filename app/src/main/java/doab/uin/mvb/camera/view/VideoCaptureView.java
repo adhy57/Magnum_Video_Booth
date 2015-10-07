@@ -99,7 +99,7 @@ public class VideoCaptureView extends FrameLayout implements OnClickListener {
 	public void updateUIRecordingFinished(Bitmap videoThumbnail) {
 		mRecordBtnIv.setVisibility(View.INVISIBLE);
 		mAcceptBtnIv.setVisibility(View.VISIBLE);
-		mDeclineBtnIv.setVisibility(View.VISIBLE);
+		mDeclineBtnIv.setVisibility(View.INVISIBLE);
 		mThumbnailIv.setVisibility(View.VISIBLE);
 		mSurfaceView.setVisibility(View.GONE);
 		final Bitmap thumbnail = videoThumbnail;

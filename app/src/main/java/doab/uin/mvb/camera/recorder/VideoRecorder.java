@@ -90,6 +90,7 @@ public class VideoRecorder implements OnInfoListener, CapturePreviewInterface {
         mRecording = true;
         mRecorderInterface.onRecordingStarted();
         CLog.d(CLog.RECORDER, "Successfully started recording - outputfile: " + mVideoFile.getFullPath());
+
     }
 
     public void stopRecording(String message) {

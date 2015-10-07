@@ -29,6 +29,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import doab.uin.mvb.BluetoothService;
 import doab.uin.mvb.R;
 import doab.uin.mvb.camera.*;
 import doab.uin.mvb.camera.camera.CameraWrapper;
@@ -88,6 +89,10 @@ public class VideoCaptureActivity extends Activity implements RecordingButtonInt
 			public void onFinish() {
 				txt_countTimer.setVisibility(View.GONE);
 				mVideoRecorder.toggleRecording();
+				Intent bt = new Intent(VideoCaptureActivity.this, BluetoothService.class);
+				bt.putExtra("id", 1);
+				bt.putExtra("msg", "START");
+				startService(bt);
 			}
 		};
 	}

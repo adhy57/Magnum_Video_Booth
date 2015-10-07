@@ -34,7 +34,6 @@ public class SettingActivity extends Activity {
     Set<BluetoothDevice> devicesArray;
     Button bScan, bOff, bPutar;
     TextView tvMac;
-    boolean mConnected = false;
     String namaPerangkat, macAddress;
     BluetoothSocket mBluetoothSocket;
     OutputStream mOutputStream;
@@ -61,39 +60,28 @@ public class SettingActivity extends Activity {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                                     long arg3) {
                 // TODO Auto-generated method stub
-                if(!mConnected){
+                if(!((MyApplication)getApplication()).ismConnected()){
                     for(BluetoothDevice device:devicesArray){
                         if(device.getName().equals(arg0.getItemAtPosition(arg2))){
                             macAddress = String.valueOf(device.getAddress());
                             namaPerangkat = device.getName();
                         }
                     }
-                    try {
-                        connect(macAddress); // Perintah untuk mengkoneksikan
-                        tvMac.setText("Terkoneksi dengan '" + namaPerangkat + "'");
-                    } catch (NoSuchMethodException e) {
-                        // TODO Auto-generated catch block
-                        Toast.makeText(getApplicationContext(), "Koneksi gagal.", Toast.LENGTH_SHORT).show();
-                        bukaPerangkatBluetooth();
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        // TODO Auto-generated catch block
-                        Toast.makeText(getApplicationContext(), "Koneksi gagal.", Toast.LENGTH_SHORT).show();
-                        bukaPerangkatBluetooth();
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        // TODO Auto-generated catch block
-                        Toast.makeText(getApplicationContext(), "Koneksi gagal.", Toast.LENGTH_SHORT).show();
-                        bukaPerangkatBluetooth();
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        Toast.makeText(getApplicationContext(), "Koneksi gagal.", Toast.LENGTH_SHORT).show();
-                        bukaPerangkatBluetooth();
-                        e.printStackTrace();
-                    }
+//                    try {
+                        Intent bt = new Intent(SettingActivity.this, BluetoothService.class);
+                        bt.putExtra("mac", macAddress);
+                        bt.putExtra("id", 0);
+                        startService(bt);
+//                        if(!((MyApplication)getApplication()).ismConnected()){
+//                            listAdapter.clear();
+//                            listAdapter.add("Putuskan Perangkat");
+//                            tvMac.setText("Terkoneksi dengan '" + namaPerangkat + "'");
+//                        }
+
                 }else{
-                    diskonekPerangkat();
+//                    Intent bt = new Intent(SettingActivity.this, BluetoothService.class);
+//                    bt.putExtra("id", 2);
+//                    stopService(bt);
                     bukaPerangkatBluetooth();
                     tvMac.setText("Pilih Perangkat:");
                 }
@@ -104,15 +92,19 @@ public class SettingActivity extends Activity {
             @Override
             public void onClick(View arg0) {
                 // TODO Auto-generated method stub
-                if(!mConnected){
+                if(!((MyApplication)getApplication()).ismConnected()){
                     Toast.makeText(getApplicationContext(), "Koneksikan perangkat dahulu!", Toast.LENGTH_SHORT).show();
                 }else{
-                    try {
-                        send("START"); // change this value
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                    Intent bt = new Intent(SettingActivity.this, BluetoothService.class);
+                    bt.putExtra("id", 1);
+                    bt.putExtra("msg", "START");
+                    startService(bt);
+                    if(!((MyApplication)getApplication()).ismConnected()){
+                        listAdapter.clear();
+                        listAdapter.add("Putuskan Perangkat");
                     }
+//                  send("START"); // change this value
+
                 }
             }
         });
@@ -128,15 +120,15 @@ public class SettingActivity extends Activity {
             @Override
             public void onClick(View arg0) {
                 // TODO Auto-generated method stub
-                if(!mConnected){
+                if(!((MyApplication)getApplication()).ismConnected()){
                     Toast.makeText(getApplicationContext(), "Koneksikan perangkat dahulu!", Toast.LENGTH_SHORT).show();
                 }else{
-                    try {
-                        send("matikan\n"); // change this value
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        send("matikan\n"); // change this value
+//                    } catch (IOException e) {
+//                        // TODO Auto-generated catch block
+//                        e.printStackTrace();
+//                    }
                 }
             }
         });
@@ -151,24 +143,25 @@ public class SettingActivity extends Activity {
     }
 
 
-    protected boolean connect(String macAddress2) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IOException{
-        // TODO Auto-generated method stub
-
-        BluetoothDevice mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(macAddress2);
-        //Method mMethod = mBluetoothDevice.getClass().getMethod("createRfcommSocket", new Class[]{int.class});
-        UUID localUUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
-        mBluetoothSocket = mBluetoothDevice.createRfcommSocketToServiceRecord(localUUID);
-        mBluetoothSocket.connect();
-
-        mOutputStream = mBluetoothSocket.getOutputStream();
-
-        if(!mConnected){
-            listAdapter.clear();
-            listAdapter.add("Putuskan Perangkat");
-        }
-        mConnected = true;
-        return true;
-    }
+//    protected boolean connect(String macAddress2) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IOException{
+//        // TODO Auto-generated method stub
+//
+//        BluetoothDevice mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(macAddress2);
+//        //Method mMethod = mBluetoothDevice.getClass().getMethod("createRfcommSocket", new Class[]{int.class});
+//        UUID localUUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+//        mBluetoothSocket = mBluetoothDevice.createRfcommSocketToServiceRecord(localUUID);
+//        mBluetoothSocket.connect();
+//
+//        mOutputStream = mBluetoothSocket.getOutputStream();
+//
+//        if(!((MyApplication)getApplication()).ismConnected()){
+//            listAdapter.clear();
+//            listAdapter.add("Putuskan Perangkat");
+//        }
+//        ((MyApplication)getApplication()).setmConnected(true);
+////        mConnected = true;
+//        return true;
+//    }
 
 
     private void bukaPerangkatBluetooth() {
@@ -191,21 +184,29 @@ public class SettingActivity extends Activity {
     }
 
 
-    private void diskonekPerangkat() {
-        // TODO Auto-generated method stub
-        if (mConnected) {
-            try {
-                if (mBluetoothSocket != null) {
-                    mBluetoothSocket.close();
-                    mBluetoothSocket = null;
-                }
-            } catch (IOException e) {
-                mBluetoothSocket = null;
-            }
-        }
-        mConnected = false;
-    }
+//    private void diskonekPerangkat() {
+//        // TODO Auto-generated method stub
+//        if (((MyApplication)getApplication()).ismConnected()) {
+//            try {
+//                if (mBluetoothSocket != null) {
+//                    mBluetoothSocket.close();
+//                    mBluetoothSocket = null;
+//                }
+//            } catch (IOException e) {
+//                mBluetoothSocket = null;
+//            }
+//        }
+//        ((MyApplication)getApplication()).setmConnected(false);
+////        mConnected = false;
+//    }
 
+//    private void send(final String message) throws IOException {
+//        if (((MyApplication)getApplication()).ismConnected()) {
+//            if (mBluetoothSocket != null) {
+//                mOutputStream.write(message.getBytes());
+//            }
+//        }
+//    }
 
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -261,14 +262,8 @@ public class SettingActivity extends Activity {
 //            bicara = false;
 //        }
 //
-//    }
 
-    private void send(final String message) throws IOException {
-        if (mConnected) {
-            if (mBluetoothSocket != null) {
-                mOutputStream.write(message.getBytes());
-            }
-        }
-    }
+
+//    }
 
 }
