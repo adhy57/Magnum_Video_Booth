@@ -18,8 +18,8 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.container, new MainFragment()).commit();
-//        fragmentManager.beginTransaction().replace(R.id.container, new CameraFragment()).commit();
+//        fragmentManager.beginTransaction().replace(R.id.container, new MainFragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.container, new CameraFragment()).commit();
     }
 
 

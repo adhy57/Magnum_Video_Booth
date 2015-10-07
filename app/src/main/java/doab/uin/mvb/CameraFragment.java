@@ -186,11 +186,15 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
     }
 
     private void startVideoCaptureActivity() {
-        final CaptureConfiguration config = createCaptureConfiguration();
-        final Intent intent = new Intent(getActivity(), VideoCaptureActivity.class);
-        intent.putExtra(VideoCaptureActivity.EXTRA_CAPTURE_CONFIGURATION, config);
-        intent.putExtra(VideoCaptureActivity.EXTRA_OUTPUT_FILENAME, filename);
-        startActivityForResult(intent, 101);
+        if(((MyApplication)getActivity().getApplication()).ismConnected()){
+            final CaptureConfiguration config = createCaptureConfiguration();
+            final Intent intent = new Intent(getActivity(), VideoCaptureActivity.class);
+            intent.putExtra(VideoCaptureActivity.EXTRA_CAPTURE_CONFIGURATION, config);
+            intent.putExtra(VideoCaptureActivity.EXTRA_OUTPUT_FILENAME, filename);
+            startActivityForResult(intent, 101);
+        }else{
+            Toast.makeText(getActivity(), "Koneksikan perangkat dahulu!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -200,7 +204,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
             filename = data.getStringExtra(VideoCaptureActivity.EXTRA_OUTPUT_FILENAME);
             int take = ((MyApplication)getActivity().getApplication()).getTake();
             ((MyApplication)getActivity().getApplication()).setUriVideo(filename);
-            ((MyApplication)getActivity().getApplication()).setTake(take+1);
+            ((MyApplication)getActivity().getApplication()).setTake(take + 1);
             if (take+1 >= 2){
                 captureBtn.setVisibility(View.GONE);
             }else {

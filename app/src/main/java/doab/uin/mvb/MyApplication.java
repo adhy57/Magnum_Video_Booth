@@ -8,6 +8,7 @@ import android.content.pm.Signature;
 import android.util.Base64;
 import android.util.Log;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -23,6 +24,15 @@ public class MyApplication extends Application {
     public boolean mConnected = false;
     public BluetoothSocket mBluetoothSocket;
     public OutputStream mOutputStream;
+    public InputStream mInputStream;
+
+    public InputStream getmInputStream() {
+        return mInputStream;
+    }
+
+    public void setmInputStream(InputStream mInputStream) {
+        this.mInputStream = mInputStream;
+    }
 
     public BluetoothSocket getmBluetoothSocket() {
         return mBluetoothSocket;

@@ -1,6 +1,7 @@
 package doab.uin.mvb;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -15,7 +16,10 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.speech.RecognizerIntent;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -38,6 +42,8 @@ public class SettingActivity extends Activity {
     BluetoothSocket mBluetoothSocket;
     OutputStream mOutputStream;
     boolean bicara, aktifBluetooth = false;
+
+
 
 
 
@@ -85,6 +91,7 @@ public class SettingActivity extends Activity {
                     bukaPerangkatBluetooth();
                     tvMac.setText("Pilih Perangkat:");
                 }
+
             }
         });
 
@@ -142,28 +149,6 @@ public class SettingActivity extends Activity {
         bukaPerangkatBluetooth();
     }
 
-
-//    protected boolean connect(String macAddress2) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IOException{
-//        // TODO Auto-generated method stub
-//
-//        BluetoothDevice mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(macAddress2);
-//        //Method mMethod = mBluetoothDevice.getClass().getMethod("createRfcommSocket", new Class[]{int.class});
-//        UUID localUUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
-//        mBluetoothSocket = mBluetoothDevice.createRfcommSocketToServiceRecord(localUUID);
-//        mBluetoothSocket.connect();
-//
-//        mOutputStream = mBluetoothSocket.getOutputStream();
-//
-//        if(!((MyApplication)getApplication()).ismConnected()){
-//            listAdapter.clear();
-//            listAdapter.add("Putuskan Perangkat");
-//        }
-//        ((MyApplication)getApplication()).setmConnected(true);
-////        mConnected = true;
-//        return true;
-//    }
-
-
     private void bukaPerangkatBluetooth() {
         // TODO Auto-generated method stub
         devicesArray = mBluetoothAdapter.getBondedDevices();
@@ -208,62 +193,6 @@ public class SettingActivity extends Activity {
 //        }
 //    }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        // TODO Auto-generated method stub
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if(resultCode == RESULT_OK && aktifBluetooth){
-//            bukaPerangkatBluetooth();
-//            Toast.makeText(getApplicationContext(), "Bluetooth diaktifkan.", Toast.LENGTH_SHORT).show();
-//            aktifBluetooth = false;
-//        }
-//
-//        if(resultCode == RESULT_OK && bicara){
-//            ArrayList<String> text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-//            Toast.makeText(getApplicationContext(), "'" + text.get(0) + "'", Toast.LENGTH_SHORT).show();
-//
-//            try {
-//                send(text.get(0) + "\n");
-//            } catch (IOException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//
-//
-//            //if(text.get(0).equals("hidupkan")){
-//            //	try {
-//            //		send("1");
-//            //	} catch (IOException e) {
-//            // TODO Auto-generated catch block
-//            //		e.printStackTrace();
-//            //	}
-//            //}
-//            //else if(text.get(0).equals("matikan")){
-//            //	try {
-//            //		send("0");
-//            //	} catch (IOException e) {
-//            // TODO Auto-generated catch block
-//            //		e.printStackTrace();
-//            //	}
-//            //}
-//            //else{
-//            //	Toast.makeText(getApplicationContext(), "Perintah tidak ditemukan.", Toast.LENGTH_SHORT).show();
-//            //}
-//            bicara = false;
-//        }
-//
-//        if(resultCode == RESULT_CANCELED && aktifBluetooth){
-//            Toast.makeText(getApplicationContext(), "Bluetooth harus diaktifkan.", Toast.LENGTH_SHORT).show();
-//            finish();
-//        }
-//
-//        if(resultCode == RESULT_CANCELED && bicara){
-//            Toast.makeText(getApplicationContext(), "Dibatalkan.", Toast.LENGTH_SHORT).show();
-//            bicara = false;
-//        }
-//
-
-
-//    }
+//   
 
 }
