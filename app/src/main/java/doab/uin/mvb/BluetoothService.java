@@ -37,6 +37,7 @@ public class BluetoothService extends Service {
     byte[] readBuffer;
     int readBufferPosition;
     volatile boolean stopWorker;
+    String STJ;
 
     BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -100,22 +101,21 @@ public class BluetoothService extends Service {
         //Method mMethod = mBluetoothDevice.getClass().getMethod("createRfcommSocket", new Class[]{int.class});
         UUID localUUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
         UUID localUUID2 = UUID.fromString("a60f35f0-b93a-11de-8a39-08002009c666");
-//        mBluetoothSocket = mBluetoothDevice.createRfcommSocketToServiceRecord(localUUID);
-        mBluetoothSocket = mBluetoothDevice.createInsecureRfcommSocketToServiceRecord(localUUID);
+        mBluetoothSocket = mBluetoothDevice.createRfcommSocketToServiceRecord(localUUID);
+//        mBluetoothSocket = mBluetoothDevice.createInsecureRfcommSocketToServiceRecord(localUUID);
         mBluetoothSocket.connect();
-//        mBluetoothServerSocket = mBluetoothAdapter.listenUsingRfcommWithServiceRecord("btspp", localUUID2);
-//        mBluetoothServerSocket.accept();
 
         mOutputStream = mBluetoothSocket.getOutputStream();
         mInputStream = mBluetoothSocket.getInputStream();
+
+        beginListenForData();
 
 //        if(!((MyApplication)getApplication()).ismConnected()){
 //            listAdapter.clear();
 //            listAdapter.add("Putuskan Perangkat");
 //        }
         ((MyApplication)getApplication()).setmConnected(true);
-//        mConnected = true;
-//        return true;
+//
     }
 
     public void diskonekPerangkat() {
@@ -133,47 +133,7 @@ public class BluetoothService extends Service {
         ((MyApplication)getApplication()).setmConnected(false);
 //        mConnected = false;
     }
-//    protected void listen() {
-//        try {
-//
-//			/* accept client request */
-//            BluetoothSocket socket = mBluetoothServerSocket.accept();
-////            Log.d("EF-BTBee", ">>Accept Client Request");
-//
-//			/* Processing the request content*/
-//            if (socket != null) {
-//                InputStream inputStream = socket.getInputStream();
-//                int read = -1;
-//                final byte[] bytes = new byte[2048];
-//                for (; (read = inputStream.read(bytes)) > -1;) {
-//                    final int count = read;
-//                    _handler.post(new Runnable() {
-//                        public void run() {
-//                            StringBuilder b = new StringBuilder();
-//                            for (int i = 0; i < count; ++i) {
-//                                if (i > 0) {
-//                                    b.append(' ');
-//                                }
-//                                String s = Integer.toHexString(bytes[i] & 0xFF);
-//                                if (s.length() < 2) {
-//
-//                                    b.append('0');
-//                                }
-//                                b.append(s);
-//                            }
-//                            String s = b.toString();
-//                            Toast.makeText(getApplicationContext(), s ,Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                }
-////                Log.d("EF-BTBee", ">>Server is over!!");
-//            }
-//        } catch (IOException e) {
-////            Log.e("EF-BTBee", "", e);
-//        } finally {
-//
-//        }
-//    }
+
     public void beginListenForData()
     {
         final Handler handler = new Handler();
@@ -186,38 +146,55 @@ public class BluetoothService extends Service {
         {
             public void run()
             {
-                while(true)
+                while(!Thread.currentThread().isInterrupted() && !stopWorker)
                 {
                     try
                     {
                         int bytesAvailable = mInputStream.available();
+//                        myLabel.setText("Data AVA");
                         if(bytesAvailable > 0)
                         {
                             byte[] packetBytes = new byte[bytesAvailable];
                             mInputStream.read(packetBytes);
+//                            myLabel.setText("Data AVA 1");
+                            StringBuilder SB = new StringBuilder();
                             for(int i=0;i<bytesAvailable;i++)
                             {
-                                byte b = packetBytes[i];
-                                if(b == delimiter)
-                                {
-                                    byte[] encodedBytes = new byte[readBufferPosition];
-                                    System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
-                                    final String data = new String(encodedBytes, "US-ASCII");
-                                    readBufferPosition = 0;
+                                //BARU
+                                if (i > 0) {
+                                    SB.append(' ');
+                                }
+                                String s = Integer.toHexString(packetBytes[i] & 0xFF);
+                                if (s.length() < 2) {
 
-                                    handler.post(new Runnable()
+                                    SB.append('0');
+                                }
+                                SB.append(s);
+                                STJ = SB.toString();
+                                //LAMA
+//                                byte b = packetBytes[i];
+//                                if(b == delimiter)
+//                                {
+//                                    byte[] encodedBytes = new byte[readBufferPosition];
+//                                    System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
+//                                    final String data = new String(encodedBytes, "US-ASCII");
+//                                    readBufferPosition = 0;
+//
+                                handler.post(new Runnable() {
+                                    public void run()
                                     {
-                                        public void run()
-                                        {
-                                            Toast.makeText(getApplicationContext(), data ,Toast.LENGTH_SHORT).show();
-                                            Log.d("EF-BTBee", ">>Server is over!!"+data);
-                                        }
-                                    });
-                                }
-                                else
-                                {
-                                    readBuffer[readBufferPosition++] = b;
-                                }
+//                                            myLabel.setText(data);
+//                                        int i = Integer.parseInt(STJ);
+                                        String data = hexToString(STJ);
+//                                        myLabel.setText(STJ);
+                                        Toast.makeText(getApplicationContext(), "Bluetooth : "+data+" ", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+//                                }
+//                                else
+//                                {
+//                                    readBuffer[readBufferPosition++] = b;
+//                                }
                             }
                         }
                     }
@@ -232,41 +209,16 @@ public class BluetoothService extends Service {
         workerThread.start();
     }
 
-    public void run() {
-        byte[] buffer = new byte[1024]; // buffer store for the stream
-        int bytes; // bytes returned from read()
-
-        // Keep listening to the InputStream until an exception occurs
-        while (true) {
-            try {
-                // Read from the InputStream
-                bytes = mInputStream.read(buffer);
-                // Send the obtained bytes to the UI activity
-                mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer)
-                        .sendToTarget();
-            }
-            catch (IOException e) {
-                Log.e("bluetooth", "Error reading from btInputStream");
-                break;
-            }
+    public String hexToString(String txtInHex)
+    {
+        byte [] txtInByte = new byte [txtInHex.length() / 2];
+        int j = 0;
+        for (int i = 0; i < txtInHex.length(); i += 2)
+        {
+            txtInByte[j++] = Byte.parseByte(txtInHex.substring(i, i + 2), 16);
         }
+        return new String(txtInByte);
     }
-    private final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MESSAGE_WRITE:
-                    //Do something when writing
-                    break;
-                case MESSAGE_READ:
-                    //Get the bytes from the msg.obj
-                    byte[] readBuf = (byte[]) msg.obj;
-                    // construct a string from the valid bytes in the buffer
-                    String readMessage = new String(readBuf, 0, msg.arg1);
-                    Toast.makeText(getApplicationContext(), readMessage, Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-    };
+
 
 }
