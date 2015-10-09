@@ -248,7 +248,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
     private CaptureConfiguration createCaptureConfiguration() {
 //        final CaptureResolution resolution = getResolution(resolutionSp.getSelectedItemPosition());
 //        final CaptureQuality quality = getQuality(qualitySp.getSelectedItemPosition());
-        int fileDuration = 6;
+        int fileDuration = 10;
         int filesize = 10;
         return new CaptureConfiguration(CaptureResolution.RES_480P, CaptureQuality.HIGH, fileDuration, filesize);
     }

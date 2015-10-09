@@ -47,6 +47,9 @@ public class SettingActivity extends Activity {
 
 
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +114,9 @@ public class SettingActivity extends Activity {
                         listAdapter.add("Putuskan Perangkat");
                     }
 //                  send("START"); // change this value
+//                    if(((MyApplication)getApplication()).ismConnected()){
+//                        beginListenForData();
+//                    }
 
                 }
             }
@@ -192,6 +198,8 @@ public class SettingActivity extends Activity {
 //            }
 //        }
 //    }
+
+
 
 //
 

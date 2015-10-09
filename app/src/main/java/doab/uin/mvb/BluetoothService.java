@@ -29,15 +29,8 @@ public class BluetoothService extends Service {
     OutputStream mOutputStream;
     InputStream mInputStream;
 
-    public static final int MESSAGE_WRITE = 1;
-    public static final int MESSAGE_READ = 2;
 
-    private Handler _handler = new Handler();
-    Thread workerThread;
-    byte[] readBuffer;
-    int readBufferPosition;
-    volatile boolean stopWorker;
-    String STJ;
+
 
     BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -106,9 +99,10 @@ public class BluetoothService extends Service {
         mBluetoothSocket.connect();
 
         mOutputStream = mBluetoothSocket.getOutputStream();
-        mInputStream = mBluetoothSocket.getInputStream();
+        ((MyApplication)getApplication()).setmInputStream(mBluetoothSocket.getInputStream());
+//        mInputStream = mBluetoothSocket.getInputStream();
 
-        beginListenForData();
+//        beginListenForData();
 
 //        if(!((MyApplication)getApplication()).ismConnected()){
 //            listAdapter.clear();
@@ -134,91 +128,7 @@ public class BluetoothService extends Service {
 //        mConnected = false;
     }
 
-    public void beginListenForData()
-    {
-        final Handler handler = new Handler();
-        final byte delimiter = 10; //This is the ASCII code for a newline character
 
-        stopWorker = false;
-        readBufferPosition = 0;
-        readBuffer = new byte[1024];
-        workerThread = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                while(!Thread.currentThread().isInterrupted() && !stopWorker)
-                {
-                    try
-                    {
-                        int bytesAvailable = mInputStream.available();
-//                        myLabel.setText("Data AVA");
-                        if(bytesAvailable > 0)
-                        {
-                            byte[] packetBytes = new byte[bytesAvailable];
-                            mInputStream.read(packetBytes);
-//                            myLabel.setText("Data AVA 1");
-                            StringBuilder SB = new StringBuilder();
-                            for(int i=0;i<bytesAvailable;i++)
-                            {
-                                //BARU
-                                if (i > 0) {
-                                    SB.append(' ');
-                                }
-                                String s = Integer.toHexString(packetBytes[i] & 0xFF);
-                                if (s.length() < 2) {
-
-                                    SB.append('0');
-                                }
-                                SB.append(s);
-                                STJ = SB.toString();
-                                //LAMA
-//                                byte b = packetBytes[i];
-//                                if(b == delimiter)
-//                                {
-//                                    byte[] encodedBytes = new byte[readBufferPosition];
-//                                    System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
-//                                    final String data = new String(encodedBytes, "US-ASCII");
-//                                    readBufferPosition = 0;
-//
-                                handler.post(new Runnable() {
-                                    public void run()
-                                    {
-//                                            myLabel.setText(data);
-//                                        int i = Integer.parseInt(STJ);
-                                        String data = hexToString(STJ);
-//                                        myLabel.setText(STJ);
-                                        Toast.makeText(getApplicationContext(), "Bluetooth : "+data+" ", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-//                                }
-//                                else
-//                                {
-//                                    readBuffer[readBufferPosition++] = b;
-//                                }
-                            }
-                        }
-                    }
-                    catch (IOException ex)
-                    {
-                        stopWorker = true;
-                    }
-                }
-            }
-        });
-
-        workerThread.start();
-    }
-
-    public String hexToString(String txtInHex)
-    {
-        byte [] txtInByte = new byte [txtInHex.length() / 2];
-        int j = 0;
-        for (int i = 0; i < txtInHex.length(); i += 2)
-        {
-            txtInByte[j++] = Byte.parseByte(txtInHex.substring(i, i + 2), 16);
-        }
-        return new String(txtInByte);
-    }
 
 
 }
